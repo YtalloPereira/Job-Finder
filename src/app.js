@@ -5,8 +5,14 @@ const app = express()
 //importando o banco
 const db = require('./db/connexion')
 
+//setando body parser
+const bodyParser = require('body-parser')
+
 //Setando a porta
 const PORT = 3000
+
+//utilizando body parser
+
 
 //Ouvindo a porta
 app.listen(PORT,function(){
@@ -24,4 +30,7 @@ db.authenticate()
 app.get('/',(req, res) =>{
     res.send('Está funcionando')
 })
+
+//utilizando body parser
+app.use(bodyParser.urlencoded({ extended: false}))
 
