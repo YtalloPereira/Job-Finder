@@ -9,9 +9,9 @@ router.get('/test', (req, res) =>{
 
 //adiciona uma vaga via post
 router.post('/add',(req, res) => {
-    let{title, salary, company, description, email, new_job} = req.body
+    let{title, description, salary, company, email, new_job} = req.body
 
-    Job.Create({
+    Job.create({
         title,
         description,
         salary,
