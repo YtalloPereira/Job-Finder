@@ -34,3 +34,5 @@ app.get('/',(req, res) =>{
 //utilizando body parser
 app.use(bodyParser.urlencoded({ extended: false}))
 
+//rotas de job
+app.use('/jobs', require('./routes/jobRoutes'))
