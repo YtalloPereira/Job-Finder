@@ -81,4 +81,4 @@ dist
 .dynamodb/
 
 #DB file
-src\db\app.db
+src/db/app.db
