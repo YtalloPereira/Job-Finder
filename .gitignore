@@ -79,3 +79,6 @@ dist
 
 # DynamoDB Local files
 .dynamodb/
+
+#DB file
+src\db\app.db
