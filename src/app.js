@@ -48,7 +48,7 @@ app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 //pasta statica
-app.use(express.static(path.join(__dirname, 'src/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 //rotas de job
 app.use('/jobs', require('./routes/jobRoutes'))
