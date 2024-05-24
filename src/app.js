@@ -2,7 +2,7 @@
 const express = require('express')
 const app = express()
 //importando handlebars
-const exphbs = require('express-handlebars');
+const exphbs = require('express-handlebars')
 //importando o banco
 const db = require('./db/connexion')
 //setando body parser
@@ -11,7 +11,11 @@ const bodyParser = require('body-parser')
 const PORT = 3000
 const path = require('path')
 //Pegando todos os jobs
-const Job  = require('./models/Job');
+const Job  = require('./models/Job')
+// consultas mais complexas, requisições mais complexas
+const Sequelize  = require('sequelize')
+const Op         = Sequelize.Op
+
 
 //Ouvindo a porta
 app.listen(PORT,function(){
@@ -27,16 +31,36 @@ db.authenticate()
 })
 //Pegando todas as vagas e ordenando em ordem decrescente de criação
 //Renderizando a view com as vagas nela
-app.get('/',(req, res) =>{
-    Job.findAll({order: [
-        ['createdAt', 'DESC']
-    ]})
-    .then(jobs =>{
-        res.render('index',{
-            jobs
+app.get('/',(req, res)=>{  //Rota
+
+    let search = req.query.job
+    let query  = '%'+search+'%'//PH -> PHP. Word -> Wordpress, press -> Wordpress
+
+    if(!search){
+        Job.findAll({order: [//vai encontrar todas as jobs que tenho salvas e ordenar no array
+            ['createdAt','DESC']// desc = os registros são ordenados do mais novo prpo mais velho    
+        ]})
+        .then(jobs => {
+         res.render('index', {//renderizar o index.handlebars, que é o corpo do main.handlebars(estatico)
+                jobs // redenrizar a view com as jobs dentro dela
+         })
         })
-    })
+        .catch(err => console.log(err))
+    }else {
+        Job.findAll({
+            where: {title: {[Op.like]: query}},//fazer um consulta baseada no titulo de acordo com oq se pesquisou
+            order: [
+                ['createdAt','DESC']
+        ]})
+        .then(jobs => {
+         res.render('index', {
+            jobs, search
+         })
+        })
+
+    }
 })
+
 
 
 //utilizando body parser
@@ -48,7 +72,7 @@ app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 //pasta statica
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')))
 
 //rotas de job
 app.use('/jobs', require('./routes/jobRoutes'))
