@@ -8,7 +8,7 @@ router.get('/test', (req, res) =>{
 })
 
 
-//rota teste
+//busca do formulário
 router.get('/add', (req, res) =>{
     res.render('add')
 })
