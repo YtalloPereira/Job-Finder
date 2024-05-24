@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 
 //importando handlebars
-const expressHbs = require('express-handlebars')
+const exphbs = require('express-handlebars');
 
 //importando o banco
 const db = require('./db/connexion')
@@ -31,7 +31,7 @@ db.authenticate()
 })
 //Testando se a porta funciona(routes)
 app.get('/',(req, res) =>{
-    res.send('Está funcionando')
+    res.send('index')
 })
 
 //utilizando body parser
@@ -39,8 +39,12 @@ app.use(bodyParser.urlencoded({ extended: false}))
 
 //handlebars
 app.set('views', path.join(__dirname, 'src/views')) 
-app.engine('handlebars', expressHbs({defaultLayout: 'main'}))
+app.engine('handlebars', exphbs.engine({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
+
+//pasta statica
+app.use(express.static(path.join(__dirname, 'src/public')));
 
 //rotas de job
 app.use('/jobs', require('./routes/jobRoutes'))
+
